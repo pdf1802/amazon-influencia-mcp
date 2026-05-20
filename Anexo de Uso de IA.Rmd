@@ -1,0 +1,136 @@
+---
+title: "Anexo de Uso de IA"
+output: html_document
+---
+
+#BLOQUE I: PCA
+## Interacción 1: Confirmación y correción de la carga e idntificación del dataset(Alucinación).
+
+**Prompt inicial:** "He descargado el dataset de Amazon Product Reviews de Kaggle, confírmame que la carga de datos está hecha correctamente."
+
+**Respuesta de la IA:** La IA asumió que el dataset era el *Amazon Fine Food Reviews* (otro dataset distinto de Kaggle) y generó código con columnas 
+inexistentes en nuestro dataset como `product_title` o `category`.
+
+**Crítica:** El dataset correcto es el de Arham Rumi en Kaggle, que tiene columnas `ProductId`, `Score`, `HelpfulnessNumerator`, etc. La IA confundió 
+dos datasets distintos al no tener el link exacto.
+
+**Solución final:** Se proporcionó el link exacto del dataset y se confirmaron los nombres de columna ejecutando `print(names(dt))` en RStudio antes de 
+continuar.
+
+
+## Interacción 2: Contrucción de la tabla de métricas
+
+**Prompt inicial:** He sacado las métricas para la tabla, pero al hacer merge() d etodas las métricas en el PCA me da error.
+*Código adjuntado de ejemplo:*
+```{r}
+ eval = false
+resenas <- dt[, unique(Summary), by = ProductId]
+tabla_metricas <- merge(rating_promedio, resenas, by = "ProductId")
+```
+
+**Solución de la IA:** Construyó la tabla uniendo todas las líneas de las métricas en lugar de hacerlo 1 por 1 como yo hacía.
+```{r}
+eval = false
+metricas <- dt[, .(
+  rating_medio      = mean(Score, na.rm = TRUE),
+  n_resenas         = .N,
+  helpfulness_ratio = sum(HelpfulnessNumerator, na.rm = TRUE) /
+                      pmax(sum(HelpfulnessDenominator, na.rm = TRUE), 1),
+  longitud_media    = mean(nchar(Text), na.rm = TRUE)
+), by = ProductId]
+```
+
+
+## Interacción 3 — Variable precio no disponible
+
+**Prompt inicial:** "El enunciado pide el precio pero no encuentro esa columna."
+
+**Respuesta de la IA:** La IA inicialmente no detectó el problema y siguió generando código con una columna `price` inexistente.
+
+**Crítica:** El dataset de reseñas no contiene precios. La IA debería haber advertido esto desde el principio al conocer la estructura del dataset.
+
+**Solución final:** Después de hablar con el profesor, sustituí el precio por `helpfulness_ratio` (HelpfulnessNumerator / HelpfulnessDenominator) como métrica de relevancia percibida.
+
+## Interacción 4 — Estrategia de filtrado del dataset
+
+**Prompt inicial:** "El enunciado recomienda filtrar por subcategoría o por umbral de reseñas. ¿Qué hacemos?"
+
+**Respuesta de la IA:** La IA sugirió filtrar por `n_resenas >= 5` como umbral por defecto.
+
+**Crítica y validación humana:** El enunciado sugiere dos estrategias alternativas: filtrar por subcategoría (ej. Videojuegos) o por umbral 
+de reseñas. Se descartó el filtrado por categoría porque el dataset no incluye una columna de categoría explícita. Se eligió el umbral de 
+5 reseñas como equilibrio entre:
+- Eliminar productos con poca información estadística (< 5 reseñas)
+- Conservar suficientes productos para que la red tenga estructura
+
+**Análisis de sensibilidad:** Se comprobó que umbrales entre 3 y 10 producen resultados estables en el PCA. Para el Bloque II se revisará 
+si es necesario subir el umbral para reducir la densidad del grafo.
+
+## Interacción 5: Criterio de Kaiser
+**Prompt inicial:** "No recuerdo el criterio de Kaiser, explícamelo"
+**Respuesta de la IA:** El criterio de Kaiser es una regla comúnmente utilizada en análisis de componentes principales (PCA) para determinar cuántos componentes principales retener. Según este criterio, se deben retener aquellos componentes que tengan un autovalor (eigenvalue) mayor que 1. Esto se basa en la idea de que un componente con un autovalor menor o igual a 1 no aporta más información que una variable original estandarizada, por lo que no se considera útil para la interpretación del modelo. En resumen, el criterio de Kaiser ayuda a identificar los componentes principales que explican una cantidad significativa de varianza en los datos.
+
+**Acción:** Se apicó el criteri de Kaiser y se tomó la decisión d quedarnos con las tres primeras variables, que cubrían el $80.4%$. Aunque el eignvalue de PC3 no fuera 1, se encontraba muy cerca y con ella se explicaba más varianza.
+
+
+## Interacción 6 — Umbral para el grafo de coparticipación
+
+**Prompt inicial:** "Tenemos 20.415 productos y 206.927 usuarios, ¿cómo puedo ver cuál es el umbral más óptimo?"
+
+**Respuesta de la IA:** Sugirió subir el umbral de reseñas mínimas y probar varios valores:
+
+```{r}
+eval = FALSE
+
+# Ver cuántos productos quedan con distintos umbrales
+for (umbral in c(10, 20, 50, 100)) {
+  n <- nrow(metricas[n_resenas >= umbral])
+  cat("Umbral >= ", umbral, "reseñas →", n, "productos\n")
+}
+
+for (umbral in c(50, 60, 70, 80)) {
+  n <- nrow(metricas[n_resenas >= umbral])
+  cat("Umbral >= ", umbral, "reseñas →", n, "productos\n")
+}
+```
+
+**Análisis de sensibilidad propio:**
+- >= 20 reseñas → 5.030 productos (demasiado grande)
+- >= 50 reseñas → 1.844 productos  
+- >= 70 reseñas → 1.276 productos 
+- >= 100 reseñas → 866 productos (pierde estructura)
+
+**Decisión final:** Umbral 70 reseñas. Equilibrio entre manejabilidad computacional y conservar suficiente estructura en la red.
+
+## Interacción 7 — Limpieza de nodos aislados
+
+**Prompt inicial:** "Intento eliminar los nodos aislados peror no me elimina ninguno, ¿qué hago?""
+
+**Respuesta de la IA:** Sugirió usar `delete_vertices(grafo, which(degree(grafo) == 0))`, código ya ejecutado por mí.
+
+**Validación humana:** Al ejecutarlo, el número de nodos vovió a no cambiar (1017 → 1017). Investigando, se comprobó que esto es correcto: al construir el grafo filtrando por N≥10, cualquier producto que aparece en la edge list ya tiene al menos una conexión. La IA no anticipó este resultado, pero el código era técnicamente correcto.
+
+**Conclusión:** No existen nodos aislados. El filtrado previo por umbral N los eliminó implícitamente.
+
+
+## Interacción 8 — Métricas de centralidad: PageRank y Betweenness
+
+**Prompt inicial:** "¿Cómo ordenosegún PageRan y Betwenness?"
+
+**Respuesta de la IA:** Sugirió `page_rank(g)$vector` y `betweenness(g, normalized = TRUE)`. Para ordenar la tabla 
+generó este código:
+
+
+**Solución final:** 
+
+```r
+
+cat("--- TOP 5 PAGERANK (productos faro) ---\n")
+print(centralidad_dt[order(-pagerank)][1:5])
+
+cat("--- TOP 5 BETWEENNESS (productos puente) ---\n")
+print(centralidad_dt[order(-betweenness)][1:5])
+```
+
+**Validación humana:** Una vez hecho el código, la IA sugirió usar normaized= TRUE en betweennes para que los valores fueran comparables sin importr el tamaño de grafo.
+

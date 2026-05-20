@@ -1,0 +1,239 @@
+---
+title: "Proyecto"
+format: html
+---
+
+# BLOQUE I:PCA
+
+## Carga de dataset y librerías
+```{r}
+#| echo: false
+
+library(data.table)
+library(ggplot2)
+library(factoextra)
+library(igraph)
+library(tidygraph)
+library(ggraph)
+set.seed(42)
+```
+
+```{r}
+dt <- fread("Reviews.csv")
+cat("Filas:", nrow(dt), "\n")
+print(names(dt))
+```
+
+Vamos a construir una tabla de métricas para reducir la dimensionalidad de nuestro dataset. Para esto, vamos a calcular el **rating promedio**,**número de reseñas**, **hepfulness ratio**, **longitud promedio de la reseña** por producto.
+
+```{r}
+metricas <- dt[, .(
+  rating_medio      = mean(Score, na.rm = TRUE),
+  n_resenas         = .N,
+  helpfulness_ratio = sum(HelpfulnessNumerator, na.rm = TRUE) /
+                      pmax(sum(HelpfulnessDenominator, na.rm = TRUE), 1),
+  longitud_media    = mean(nchar(Text), na.rm = TRUE)
+), by = ProductId]
+
+# Filtramos productos con pocas reseñas 
+# Umbral elegido: >= 5 reseñas. Valores entre 3-10 producen resultados estables.
+metricas <- metricas[n_resenas >= 5]
+cat("Productos:", nrow(metricas), "\n")
+```
+
+Aplico PCA a esas variables para reducir la dimensionalidad a 2 o 3 componentes principales:
+```{r}
+# --- 2. PCA ---
+# Seleccionamos las columnas numéricas para PCA
+vars_pca <- c("rating_medio", "n_resenas", "helpfulness_ratio", "longitud_media")
+tabla_metricas <- metricas[, ..vars_pca]
+acp <- prcomp(tabla_metricas, center = TRUE, scale = TRUE)
+
+# Varianza explicada
+fviz_eig(acp, addlabels = TRUE, ylim = c(0, 70), title = "Scree Plot")
+# Contribuciones a las dos primeras componentes
+fviz_pca_var(acp, col.var = "contrib", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE, title = "Variables y sus contribuciones")
+
+
+
+```
+En el gráfico vemos como 'rating_medio' y 'helpfulness_ratio' se separan principalmente en la PC1, mientras que 'n_resenas' y 'longitud_media' se separan principalmente en la PC2.Lo cual podríamos entender como que PC1 coge productos de **ventas masivas** (con muchas reseñas) y PC2 coge productos de **calidad percibida** (con buen rating y ratio de helpfulness). Esto nos hace entender que no todos los productos con mayor número de reseñas son los mejor valorados. Popularidad y calidad percibida forman diferentes espacios en este caso.
+
+Las contribuciones en cuanto a varianza son muy similares($30.5%,26.2% \dots$), lo que nos lleva a la ausencia de codo en la gráfica. Todas las variables aportan información complementaria, idependiente y poco redundante.
+
+```{r}
+# Criterio de Kaiser: retener componentes con autovalor > 1
+autovalores <- acp$sdev^2
+print(round(autovalores, 3))
+```
+
+Aplicando el **criterio de Kaiser**, se retendrían únicamente las dos primeras componentes (autovalores: 1.221 y 1.048). Sin embargo, dado que PC3 tiene un autovalor de 0.949 y que las tres primeras componentes acumulan el **80.4%** de la varianza, optamos por retener **3 componentes** siguiendo el criterio de varianza acumulada ≥ 80%.
+
+
+# BLOQUE II: SNA
+Antes de hacer el SNA, filtramos los datos por los que están en la tabla de métricas:
+```{r}
+dt_filtrado <- dt[ProductId %in% metricas$ProductId]
+cat("Reseñas tras filtrar:", nrow(dt_filtrado), "\n")
+cat("Productos únicos:", uniqueN(dt_filtrado$ProductId), "\n")
+cat("Usuarios únicos:", uniqueN(dt_filtrado$UserId), "\n")
+```
+
+Tenemos demasiados productos y usuarios para hacer el grafo:
+
+```{r}
+# Ver cuántos productos quedan con distintos umbrales
+for (umbral in c(50, 60, 70, 80)) {
+  n <- nrow(metricas[n_resenas >= umbral])
+  cat("Umbral >= ", umbral, "reseñas →", n, "productos\n")
+}
+```
+Subimos al umbral a 70 reseñas, buen equiibro entre tener suficientes datos  que sea manejable para el grafo:
+```{r}
+metricas_grafo <- metricas[n_resenas >= 70]
+dt_grafo <- dt[ProductId %in% metricas_grafo$ProductId, .(UserId, ProductId)]
+
+cat("Productos para el grafo:", nrow(metricas_grafo), "\n")
+cat("Usuarios para el grafo:", uniqueN(dt_grafo$UserId), "\n")
+```
+Creamos el grafo bipartito de coparticipación: 
+```{r}
+# Grafo bipartito: usuarios y productos
+#Primero sacamos las aristas
+
+edges <- merge(dt_grafo, dt_grafo, by = "UserId",allow.cartesian = TRUE)
+# Eliminar auto-conexiones (mismo producto con sí mismo)
+edges <- edges[ProductId.x < ProductId.y]
+
+# Contar cuántos usuarios comparten cada par de productos (peso de la arista)
+edges_count <- edges[, .(peso = .N), by = .(from = ProductId.x, to = ProductId.y)]
+
+cat("Aristas antes de filtrar por N:", nrow(edges_count), "\n")
+```
+
+Filtramos el umbral N para reducir el número de aristas:
+```{r}
+# Ver cuántas aristas quedan con distintos valores de N
+for (n_umbral in c(2, 3, 5, 8, 10)) {
+  n <- nrow(edges_count[peso >= n_umbral])
+  cat("N >=", n_umbral, "→", n, "aristas\n")
+}
+```
+
+Optamos por un umbral de **N=10** para que el grafo sea manejable.
+```{r}
+edges_filtradas <- edges_count[peso >= 10]
+cat("Aristas después de filtrar por N=10:", nrow(edges_filtradas
+), "\n")
+
+nodos <- data.frame(name = unique(c(edges_filtradas$from, edges_filtradas$to)))
+```
+
+Creamos el grafo con igraph:
+```{r}
+grafo <- graph_from_data_frame(d = edges_filtradas, vertices = nodos,directed = FALSE)
+cat("Número de nodos:", vcount(grafo), "\n")
+cat("Número de aristas:", ecount(grafo), "\n")
+cat("Densidad del grafo:", edge_density(grafo), "\n")
+```
+
+Hago la limpieza de nodos aislados:
+```{r}
+g_clean <- delete_vertices(grafo,which(degree(grafo) == 0))
+cat("Número de nodos después de eliminar aislados:", vcount(g_clean), "\n ")
+cat("Número de aristas después de eliminar aislados:", ecount(g_clean), "\n")
+```
+Tras aplicar el filtro N≥10 en la construcción del grafo, todos los nodos resultantes tienen al menos una arista, por lo que no existen nodos aislados que eliminar.
+
+Calculo las métricas de centralidad:
+```{r}
+g_tidy <- as_tbl_graph(g_clean) |>
+  mutate(
+    degree      = centrality_degree(),
+    pagerank    = centrality_pagerank(),
+    betweenness = centrality_betweenness(normalized = TRUE)
+  )
+
+centralidad <- as.data.table(g_tidy)
+
+cat("Top 5 PageRank:\n")
+print(centralidad[order(-pagerank)][1:5, .(name, degree, pagerank, betweenness)])
+
+cat("Top 5 Betweenness:\n")
+print(centralidad[order(-betweenness)][1:5, .(name, degree, pagerank, betweenness)])
+```
+Los productos con mayor **PageRank** (B002IEVJRY, B002IEZJMA) son los "productos faro" de la red: bien conectados globalmente y rodeados de vecinos también influyentes.Su alto degree (200, 192) confirma que concentran gran parte de las co-reseñas.
+El **Betweenness** identifica productos distintos (B0061IUIDY, B0016PC4TS): con degree moderado (157, 78) pero posición estratégica como puentes entre comunidades. Estos productos conectan grupos de usuarios con hábitos de consumo diferentes — son los "conectores" del ecosistema.
+
+Que los rankings de PageRank y Betweenness no coincidan indica que popularidad global y posición de puente son dimensiones independientes en esta red.
+
+Aplico Louvain para detección de comunidades:
+```{r}
+set.seed(42)
+comunidades_louvain <- cluster_louvain(g_clean)
+V(g_clean)$comunidad <- as.factor(membership(comunidades_louvain))
+cat("Número de comunidades detectadas:", length(unique(V(g_clean)$comunidad)), "\n")
+cat("Modularidad:", round(modularity(comunidades_louvain), 3), "\n")
+
+# Top 3 comunidades más grandes
+top_comunidades <- names(sort(table(membership(comunidades_louvain)), 
+                               decreasing = TRUE))[1:3]
+
+nodos_top <- which(V(g_clean)$comunidad %in% top_comunidades)
+g_top <- induced_subgraph(g_clean, nodos_top)
+
+V(g_top)$pagerank <- centralidad[match(V(g_top)$name, name), pagerank]
+
+ggraph(as_tbl_graph(g_top), layout = "stress") +
+  geom_edge_link(alpha = 0.2, colour = "gray60") +
+  geom_node_point(aes(colour = as.factor(V(g_top)$comunidad),
+                      size = V(g_top)$pagerank * 1000)) +
+  scale_size(range = c(2, 8)) +
+  theme_graph(base_family = "sans") +
+  labs(title = "Top 3 comunidades más densas — Louvain",
+       colour = "Comunidad")
+```
+Con Louvain hemos detectado **142 comunidades** con una modularidad de **0.557**. La modularidad mide la densidad de conexiones detro de las comunidades frente a las conexiones entre comunidades. Un valor de 0.557 indica una estructura comunitaria moderadamente fuerte, con grupos de productos que están más conectados entre sí que con el resto de la red.
+
+### Vaidación Cruzada
+
+```{r}
+# Validación cruzada PCA vs SNA
+# Coordenadas de cada producto en el espacio PCA
+coords_pca <- as.data.table(acp$x[, 1:3])
+coords_pca$ProductId <- metricas$ProductId
+
+# Top 20 productos por PageRank
+top_pagerank <- centralidad[order(-centralidad$pagerank), ][1:20, ]
+
+# Marcar si están en el top de PageRank
+coords_pca$es_hub <- coords_pca$ProductId %in% top_pagerank$name
+
+top_betweenness <- centralidad[order(-centralidad$betweenness), ][1:20, ]
+
+coords_pca$es_puente <- coords_pca$ProductId %in% top_betweenness$name
+coords_pca$tipo <- ifelse(coords_pca$es_hub, "Hub PageRank",
+                   ifelse(coords_pca$es_puente, "Puente Betweenness", 
+                          "Resto"))
+
+ggplot(coords_pca, aes(x = PC1, y = PC2, colour = tipo)) +
+  geom_point(data = coords_pca[tipo == "Resto"], 
+             alpha = 0.2, size = 1) +
+  geom_point(data = coords_pca[tipo != "Resto"], 
+             size = 3, alpha = 1) +
+  scale_colour_manual(values = c("Resto" = "gray70",
+                                 "Hub PageRank" = "tomato",
+                                 "Puente Betweenness" = "steelblue")) +
+  labs(title = "Validación cruzada PCA vs SNA",
+       subtitle = "Hubs PageRank (rojo) y Puentes Betweenness (azul)",
+       colour = "") +
+  theme_minimal()+
+  theme_minimal()
+```
+Con la validación cruzada vemos dos patrones distintos:
+
+Los productos con **mayor PageRank**(en rojo) se sitñuan en el extremo derecho-infrior de PCA (PC1 ato, PC2 bajo), zona correspondiente a productos con muchas reseñas largas. Los productos más influyentes son también los outliers del PCA, por lo que poríamos decir que **popularidad y cenralidad global coinciden**.
+
+Los productos con **mayor Betweenness** (en azul) se sitúan en el centro del PCA, zona de productos con características más equilibradas. Estos productos puente no son los más populares, pero su posición estratégica los convierte en conectores entre diferentes grupos de usuarios. Esto confirma que **popularidad global y posición de puente son dimensiones independientes** en esta red.
