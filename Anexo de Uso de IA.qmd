@@ -1,0 +1,307 @@
+---
+title: "Anexo de Uso de IA — Diario de Interacción"
+subtitle: "Proyecto: Arquitectura de Influencia en Ecosistemas de Consumo"
+author: "Francisco Díaz Fernández"
+date: today
+output: html_document
+---
+
+# Bloque I: PCA
+
+## Interacción 1 — Identificación del dataset (Alucinación)
+
+**1. Prompt inicial:**
+"He descargado el dataset de Amazon Product Reviews de Kaggle, confírmame que la carga de datos está hecha correctamente."
+
+**2. Código erróneo generado por la IA:**
+La IA asumió que el dataset era el *Amazon Fine Food Reviews* (otro dataset distinto de Kaggle) y generó código con columnas inexistentes en nuestro dataset:
+
+```r
+# Código generado por la IA (erróneo)
+dt[, .(rating_medio = mean(Score),
+       precio       = mean(price),          # columna inexistente
+       categoria    = first(product_title)  # columna inexistente
+), by = ProductId]
+```
+
+**3. Crítica:**
+El dataset correcto es el de Arham Rumi en Kaggle, cuyas columnas son `ProductId`, `UserId`, `ProfileName`, `HelpfulnessNumerator`, `HelpfulnessDenominator`, `Score`, `Time`, `Summary` y `Text`. No existe ninguna columna `price`, `product_title` ni `category`. La IA confundió dos datasets distintos por no tener acceso al enlace exacto, generalizando a partir de su conocimiento de otros datasets de Amazon.
+
+**4. Solución final:**
+Se proporcionó el enlace exacto del dataset y se verificaron los nombres de columna ejecutando `print(names(dt))` en RStudio antes de continuar con cualquier análisis.
+
+---
+
+## Interacción 2 — Construcción de la tabla de métricas
+
+**1. Prompt inicial:**
+"He sacado las métricas para la tabla, pero al hacer `merge()` de todas las métricas en el PCA me da error."
+
+Código adjuntado:
+
+```r
+# Mi código original (ineficiente)
+resenas <- dt[, unique(Summary), by = ProductId]
+tabla_metricas <- merge(rating_promedio, resenas, by = "ProductId")
+```
+
+**2. Solución de la IA:**
+La IA identificó que hacer múltiples tablas separadas y luego unirlas es innecesario en `data.table`. Propuso calcular todas las métricas en una sola operación `[.data.table]`:
+
+```r
+metricas <- dt[, .(
+  rating_medio      = mean(Score, na.rm = TRUE),
+  n_resenas         = .N,
+  helpfulness_ratio = sum(HelpfulnessNumerator, na.rm = TRUE) /
+                      pmax(sum(HelpfulnessDenominator, na.rm = TRUE), 1),
+  longitud_media    = mean(nchar(Text), na.rm = TRUE)
+), by = ProductId]
+```
+
+**3. Validación humana:**
+La solución es correcta y más eficiente. `data.table` permite calcular múltiples agregaciones por grupo en una sola pasada, evitando los múltiples `merge()` intermedios que eran la fuente de errores.
+
+---
+
+## Interacción 3 — Variable precio no disponible
+
+**1. Prompt inicial:**
+"El enunciado pide el precio pero no encuentro esa columna."
+
+**2. Código erróneo generado por la IA:**
+La IA inicialmente no detectó el problema y siguió generando código con una columna `price` inexistente:
+
+```r
+# Código erróneo
+metricas <- dt[, .(precio = mean(price, na.rm = TRUE)), by = ProductId]
+```
+
+**3. Crítica:**
+El dataset de reseñas no contiene precios. La IA debería haber advertido esto desde el principio al conocer la estructura del dataset (véase Interacción 1). Es una alucinación recurrente: al no recibir el error directamente, la IA no corrigió su suposición.
+
+**4. Solución final:**
+Tras consulta con el profesor, se sustituyó el precio por `helpfulness_ratio` (HelpfulnessNumerator / HelpfulnessDenominator) como métrica de relevancia percibida por la comunidad. Un producto cuyas reseñas son marcadas como útiles actúa como proxy de valor percibido.
+
+---
+
+## Interacción 4 — Estrategia de filtrado del dataset
+
+**1. Prompt inicial:**
+"El enunciado recomienda filtrar por subcategoría o por umbral de reseñas. ¿Qué hacemos?"
+
+**2. Respuesta de la IA:**
+Sugirió filtrar por `n_resenas >= 5` como umbral conservador por defecto.
+
+**3. Crítica y validación humana:**
+El enunciado sugiere dos estrategias alternativas: filtrar por subcategoría (ej. Videojuegos) o por umbral de reseñas. Se descartó el filtrado por categoría porque el dataset no incluye una columna de categoría explícita. Se eligió el umbral de 5 reseñas como equilibrio entre eliminar productos con poca información estadística y conservar suficientes productos para que la red tenga estructura.
+
+**4. Análisis de sensibilidad propio:**
+Se comprobó que umbrales entre 3 y 10 producen resultados estables en el PCA (las componentes principales y sus contribuciones no varían significativamente). Para el Bloque II fue necesario subir el umbral a 70 reseñas para reducir la densidad del grafo a niveles manejables.
+
+---
+
+## Interacción 5 — Criterio de Kaiser
+
+**1. Prompt inicial:**
+"No recuerdo el criterio de Kaiser, explícamelo."
+
+**2. Respuesta de la IA:**
+"El criterio de Kaiser es una regla utilizada en PCA para determinar cuántos componentes retener. Se deben retener aquellos componentes con autovalor (eigenvalue) mayor que 1, basándose en la idea de que un componente con autovalor ≤ 1 no aporta más información que una variable original estandarizada."
+
+**3. Acción:**
+Se aplicó el criterio de Kaiser y se tomó la decisión de retener tres componentes. Aunque el autovalor de PC3 (0.949) no supera el umbral de 1, se encuentra muy próximo y las tres primeras componentes acumulan el 80.4% de la varianza. Se optó por aplicar el criterio complementario de varianza acumulada ≥ 80%, más conservador pero más informativo en este caso.
+
+---
+
+# Bloque II: SNA
+
+## Interacción 6 — Umbral para el grafo de coparticipación
+
+**1. Prompt inicial:**
+"Tenemos 20.415 productos y 206.927 usuarios. ¿Cómo puedo ver cuál es el umbral más óptimo para el grafo?"
+
+**2. Código sugerido por la IA:**
+```r
+for (umbral in c(10, 20, 50, 100)) {
+  n <- nrow(metricas[n_resenas >= umbral])
+  cat("Umbral >=", umbral, "reseñas →", n, "productos\n")
+}
+```
+
+**3. Análisis de sensibilidad propio:**
+Se exploró el rango de forma más granular:
+
+- >= 20 reseñas → 5.030 productos (demasiado grande, el grafo no compila)
+- >= 50 reseñas → 1.844 productos
+- >= 70 reseñas → 1.276 productos ✓
+- >= 100 reseñas → 866 productos (pierde estructura comunitaria)
+
+**4. Decisión final:**
+Umbral 70 reseñas. Es el punto de inflexión donde el grafo es computacionalmente manejable y conserva suficiente estructura para que Louvain detecte comunidades significativas.
+
+---
+
+## Interacción 7 — Limpieza de nodos aislados
+
+**1. Prompt inicial:**
+"Intento eliminar los nodos aislados pero no me elimina ninguno, ¿qué hago?"
+
+**2. Respuesta de la IA:**
+Sugirió usar `delete_vertices(grafo, which(degree(grafo) == 0))`.
+
+**3. Validación humana:**
+Al ejecutarlo, el número de nodos no cambió (1017 → 1017). Investigando, se comprobó que esto es correcto: al construir el grafo filtrando por N≥10 en las aristas, cualquier producto que aparece en la edge list ya tiene al menos una conexión. El filtrado previo los eliminó implícitamente. La IA no anticipó este resultado, pero el código era técnicamente correcto.
+
+**4. Conclusión:**
+No existen nodos aislados. Se documenta el paso igualmente en el proyecto para demostrar que se realizó la comprobación.
+
+---
+
+## Interacción 8 — Métricas de centralidad con tidygraph
+
+**1. Prompt inicial:**
+"¿Cómo ordeno los productos según PageRank y Betweenness?"
+
+**2. Código erróneo sugerido por la IA:**
+```r
+# Código sugerido (incorrecto para el contexto del curso)
+pr <- page_rank(g_clean)$vector
+bt <- betweenness(g_clean, normalized = TRUE)
+```
+
+**3. Crítica:**
+Las funciones `page_rank()` y `betweenness()` son de `igraph` base. Preferí usar las funciones de `centrality_*` de `tidygraph` para mantener la coherencia con el enfoque tidy del curso. Además, el código sugerido no asignaba los resultados a los nodos del grafo, lo que dificultaría su uso posterior en análisis o visualización.
+
+**4. Solución final:**
+```r
+g_tidy <- as_tbl_graph(g_clean) |>
+  mutate(
+    degree      = centrality_degree(),
+    pagerank    = centrality_pagerank(),
+    betweenness = centrality_betweenness(normalized = TRUE)
+  )
+```
+
+---
+
+# Bloque III: Clasificación
+
+## Interacción 9 — Asignación de categorías artificiales al grafo
+
+**1. Prompt inicial:**
+"¿Cómo añado una columna nueva a `metricas_grafo` con `data.table` y luego asigno ese atributo a los nodos de `g_clean`?"
+
+**2. Código erróneo generado a partir de la sugerencia de la IA:**
+```r
+# Código erróneo
+metricas <- metricas[, , categoria_volumen := fcase(
+  n_resenas >= 150, "Alto volumen",
+  n_resenas >= 90,  "Medio volumen",
+  default = "Bajo volumen"
+)]
+g_tidy <- g_tidy %>%
+  left_join(metricas[, .(ProductId, categoria_volumen)],
+            by = c("name" = "ProductId"))
+g_clean <- g_clean %>%
+  left_join(centralidad[, .(name, elite)], by = c("name" = "name"))
+```
+
+Error producido: `Error in V<-: ! invalid indexing`
+
+**3. Crítica:**
+El código tenía dos errores conceptuales:
+
+- **Coma de más en `data.table`**: la sintaxis `dt[, , col := ...]` tiene un argumento vacío de más. El operador `:=` modifica la tabla por referencia; la forma correcta es `dt[, col := ...]`.
+- **`left_join` sobre objetos igraph**: `g_tidy` es un `tbl_graph` y `g_clean` es un objeto `igraph`. Ninguno es un `data.frame`, por lo que `%>% left_join()` no es aplicable. La forma correcta de asignar atributos a nodos en igraph es mediante `V(grafo)$atributo <- valores`, alineando con `match()`.
+
+**4. Solución final:**
+```r
+metricas_grafo[, categoria_volumen := fcase(
+  n_resenas >= 150, "Alto volumen",
+  n_resenas >= 90,  "Medio volumen",
+  default =          "Bajo volumen"
+)]
+
+V(g_clean)$categoria_volumen <- metricas_grafo$categoria_volumen[
+  match(V(g_clean)$name, metricas_grafo$ProductId)
+]
+```
+
+`match()` alinea los valores por `ProductId`, devolviendo para cada nodo del grafo la posición correspondiente en `metricas_grafo`. Es el equivalente a un join, pero sobre vectores, que es lo que acepta `V()$`.
+
+---
+
+## Interacción 10 — Correlaciones artificiales en la matriz ICF
+
+**1. Prompt inicial:**
+"Estoy calculando la similitud entre productos con `cor()` pero me salen similitudes de exactamente 1.0 en todos los casos. ¿Por qué ocurre esto y cómo lo soluciono?"
+
+**2. Código generado por la IA:**
+```r
+S_items <- cor(M_utilidad, use = "pairwise.complete.obs")
+S_items[is.na(S_items)] <- 0
+
+recomendar_icf <- function(S, producto, top_n = 5) {
+  similitudes <- S[producto, ]
+  similitudes[producto] <- -Inf
+  top <- sort(similitudes, decreasing = TRUE)[1:top_n]
+  data.frame(producto_recomendado = names(top),
+             similitud_pearson    = round(top, 3))
+}
+print(recomendar_icf(S_items, top_producto))
+```
+
+Resultado obtenido:
+
+```
+  producto_recomendado  similitud_pearson
+1           B003TC7WN4                  1
+2           B003VXFK44                  1
+3           B003VXHGDM                  1
+4           B003VXHGE6                  1
+5           B003VXHGPK                  1
+```
+
+**3. Crítica:**
+Una similitud de exactamente 1.0 en todos los casos es un artefacto estadístico, no un resultado real. Con una densidad de matriz del 2.6%, la mayoría de pares de productos comparten muy pocos usuarios en común. Si dos productos solo tienen 1 o 2 usuarios en común y casualmente les dieron la misma nota, la correlación de Pearson devuelve 1.0 aunque sea una coincidencia puntual. La IA no advirtió de este problema ni añadió ningún control de calidad sobre el número mínimo de usuarios comunes necesarios para que la correlación sea estadísticamente fiable.
+
+**4. Solución final:**
+Se añadió un filtro basado en multiplicación matricial para calcular el número de usuarios en común por par de productos, poniendo a 0 las similitudes con menos de 10 usuarios en común:
+
+```r
+M_bin            <- !is.na(M_utilidad)
+usuarios_comunes <- t(M_bin) %*% M_bin
+
+S_items_filtrada <- S_items
+S_items_filtrada[usuarios_comunes < 10] <- 0
+```
+
+Con este filtro las recomendaciones para el producto con mayor PageRank (B002IEVJRY) muestran similitudes reales entre 0.437 y 0.714, estadísticamente respaldadas por al menos 10 usuarios en común en cada caso.
+
+---
+
+## Interacción 11 — Validación cruzada grafo × ICF
+
+**1. Prompt inicial:**
+"¿Coinciden los productos recomendados por el ICF con los vecinos directos del producto en el grafo de coparticipación?"
+
+**2. Código sugerido por la IA:**
+```r
+vecinos_grafo <- names(neighbors(g_clean, top_producto))
+top_icf       <- recomendar_icf(S_items_filtrada, top_producto)$producto_recomendado
+coincidencias <- intersect(vecinos_grafo, top_icf)
+```
+
+**3. Validación humana:**
+`intersect()` no había sido vista en clase. Antes de usarla consulté la documentación de R: la función devuelve los elementos comunes entre dos vectores, equivalente a la intersección de conjuntos. Verifiqué el resultado comprobando manualmente que los 5 productos devueltos aparecían efectivamente en ambas listas.
+
+**4. Resultado y conclusión:**
+
+```
+Vecinos en el grafo: 200
+Top 5 ICF: 5
+Coincidencias: 5
+Productos: B004FELBH8, B004T3QMD8, B005A1LGIY, B006BXUYN8, B007JT7AI
+```
+
+Los 5 productos con mayor similitud de Pearson son también vecinos directos en el grafo de coparticipación, validando que ambas aproximaciones capturan la misma estructura subyacente del mercado.

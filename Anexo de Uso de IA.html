@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Francisco Díaz Fernández">
+<meta name="dcterms.date" content="2026-06-06">
+
+<title>Anexo de Uso de IA — Diario de Interacción</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Anexo de Uso de IA_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Anexo de Uso de IA_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Anexo de Uso de IA_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Anexo de Uso de IA_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Anexo de Uso de IA_files/libs/quarto-html/popper.min.js"></script>
+<script src="Anexo de Uso de IA_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Anexo de Uso de IA_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Anexo de Uso de IA_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Anexo de Uso de IA_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Anexo de Uso de IA_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Anexo de Uso de IA_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Anexo de Uso de IA_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Anexo de Uso de IA — Diario de Interacción</h1>
+<p class="subtitle lead">Proyecto: Arquitectura de Influencia en Ecosistemas de Consumo</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Francisco Díaz Fernández </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 6, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="bloque-i-pca" class="level1">
+<h1>Bloque I: PCA</h1>
+<section id="interacción-1-identificación-del-dataset-alucinación" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-1-identificación-del-dataset-alucinación">Interacción 1 — Identificación del dataset (Alucinación)</h2>
+<p><strong>1. Prompt inicial:</strong> “He descargado el dataset de Amazon Product Reviews de Kaggle, confírmame que la carga de datos está hecha correctamente.”</p>
+<p><strong>2. Código erróneo generado por la IA:</strong> La IA asumió que el dataset era el <em>Amazon Fine Food Reviews</em> (otro dataset distinto de Kaggle) y generó código con columnas inexistentes en nuestro dataset:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Código generado por la IA (erróneo)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dt[, .(<span class="at">rating_medio =</span> <span class="fu">mean</span>(Score),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">precio       =</span> <span class="fu">mean</span>(price),          <span class="co"># columna inexistente</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">categoria    =</span> <span class="fu">first</span>(product_title)  <span class="co"># columna inexistente</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> ProductId]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Crítica:</strong> El dataset correcto es el de Arham Rumi en Kaggle, cuyas columnas son <code>ProductId</code>, <code>UserId</code>, <code>ProfileName</code>, <code>HelpfulnessNumerator</code>, <code>HelpfulnessDenominator</code>, <code>Score</code>, <code>Time</code>, <code>Summary</code> y <code>Text</code>. No existe ninguna columna <code>price</code>, <code>product_title</code> ni <code>category</code>. La IA confundió dos datasets distintos por no tener acceso al enlace exacto, generalizando a partir de su conocimiento de otros datasets de Amazon.</p>
+<p><strong>4. Solución final:</strong> Se proporcionó el enlace exacto del dataset y se verificaron los nombres de columna ejecutando <code>print(names(dt))</code> en RStudio antes de continuar con cualquier análisis.</p>
+<hr>
+</section>
+<section id="interacción-2-construcción-de-la-tabla-de-métricas" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-2-construcción-de-la-tabla-de-métricas">Interacción 2 — Construcción de la tabla de métricas</h2>
+<p><strong>1. Prompt inicial:</strong> “He sacado las métricas para la tabla, pero al hacer <code>merge()</code> de todas las métricas en el PCA me da error.”</p>
+<p>Código adjuntado:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mi código original (ineficiente)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>resenas <span class="ot">&lt;-</span> dt[, <span class="fu">unique</span>(Summary), by <span class="ot">=</span> ProductId]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tabla_metricas <span class="ot">&lt;-</span> <span class="fu">merge</span>(rating_promedio, resenas, <span class="at">by =</span> <span class="st">"ProductId"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2. Solución de la IA:</strong> La IA identificó que hacer múltiples tablas separadas y luego unirlas es innecesario en <code>data.table</code>. Propuso calcular todas las métricas en una sola operación <code>[.data.table]</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>metricas <span class="ot">&lt;-</span> dt[, .(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">rating_medio      =</span> <span class="fu">mean</span>(Score, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_resenas         =</span> .N,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">helpfulness_ratio =</span> <span class="fu">sum</span>(HelpfulnessNumerator, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">pmax</span>(<span class="fu">sum</span>(HelpfulnessDenominator, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">longitud_media    =</span> <span class="fu">mean</span>(<span class="fu">nchar</span>(Text), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> ProductId]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Validación humana:</strong> La solución es correcta y más eficiente. <code>data.table</code> permite calcular múltiples agregaciones por grupo en una sola pasada, evitando los múltiples <code>merge()</code> intermedios que eran la fuente de errores.</p>
+<hr>
+</section>
+<section id="interacción-3-variable-precio-no-disponible" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-3-variable-precio-no-disponible">Interacción 3 — Variable precio no disponible</h2>
+<p><strong>1. Prompt inicial:</strong> “El enunciado pide el precio pero no encuentro esa columna.”</p>
+<p><strong>2. Código erróneo generado por la IA:</strong> La IA inicialmente no detectó el problema y siguió generando código con una columna <code>price</code> inexistente:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Código erróneo</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>metricas <span class="ot">&lt;-</span> dt[, .(<span class="at">precio =</span> <span class="fu">mean</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), by <span class="ot">=</span> ProductId]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Crítica:</strong> El dataset de reseñas no contiene precios. La IA debería haber advertido esto desde el principio al conocer la estructura del dataset (véase Interacción 1). Es una alucinación recurrente: al no recibir el error directamente, la IA no corrigió su suposición.</p>
+<p><strong>4. Solución final:</strong> Tras consulta con el profesor, se sustituyó el precio por <code>helpfulness_ratio</code> (HelpfulnessNumerator / HelpfulnessDenominator) como métrica de relevancia percibida por la comunidad. Un producto cuyas reseñas son marcadas como útiles actúa como proxy de valor percibido.</p>
+<hr>
+</section>
+<section id="interacción-4-estrategia-de-filtrado-del-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-4-estrategia-de-filtrado-del-dataset">Interacción 4 — Estrategia de filtrado del dataset</h2>
+<p><strong>1. Prompt inicial:</strong> “El enunciado recomienda filtrar por subcategoría o por umbral de reseñas. ¿Qué hacemos?”</p>
+<p><strong>2. Respuesta de la IA:</strong> Sugirió filtrar por <code>n_resenas &gt;= 5</code> como umbral conservador por defecto.</p>
+<p><strong>3. Crítica y validación humana:</strong> El enunciado sugiere dos estrategias alternativas: filtrar por subcategoría (ej. Videojuegos) o por umbral de reseñas. Se descartó el filtrado por categoría porque el dataset no incluye una columna de categoría explícita. Se eligió el umbral de 5 reseñas como equilibrio entre eliminar productos con poca información estadística y conservar suficientes productos para que la red tenga estructura.</p>
+<p><strong>4. Análisis de sensibilidad propio:</strong> Se comprobó que umbrales entre 3 y 10 producen resultados estables en el PCA (las componentes principales y sus contribuciones no varían significativamente). Para el Bloque II fue necesario subir el umbral a 70 reseñas para reducir la densidad del grafo a niveles manejables.</p>
+<hr>
+</section>
+<section id="interacción-5-criterio-de-kaiser" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-5-criterio-de-kaiser">Interacción 5 — Criterio de Kaiser</h2>
+<p><strong>1. Prompt inicial:</strong> “No recuerdo el criterio de Kaiser, explícamelo.”</p>
+<p><strong>2. Respuesta de la IA:</strong> “El criterio de Kaiser es una regla utilizada en PCA para determinar cuántos componentes retener. Se deben retener aquellos componentes con autovalor (eigenvalue) mayor que 1, basándose en la idea de que un componente con autovalor ≤ 1 no aporta más información que una variable original estandarizada.”</p>
+<p><strong>3. Acción:</strong> Se aplicó el criterio de Kaiser y se tomó la decisión de retener tres componentes. Aunque el autovalor de PC3 (0.949) no supera el umbral de 1, se encuentra muy próximo y las tres primeras componentes acumulan el 80.4% de la varianza. Se optó por aplicar el criterio complementario de varianza acumulada ≥ 80%, más conservador pero más informativo en este caso.</p>
+<hr>
+</section>
+</section>
+<section id="bloque-ii-sna" class="level1">
+<h1>Bloque II: SNA</h1>
+<section id="interacción-6-umbral-para-el-grafo-de-coparticipación" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-6-umbral-para-el-grafo-de-coparticipación">Interacción 6 — Umbral para el grafo de coparticipación</h2>
+<p><strong>1. Prompt inicial:</strong> “Tenemos 20.415 productos y 206.927 usuarios. ¿Cómo puedo ver cuál es el umbral más óptimo para el grafo?”</p>
+<p><strong>2. Código sugerido por la IA:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (umbral <span class="cf">in</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>)) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(metricas[n_resenas <span class="sc">&gt;=</span> umbral])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Umbral &gt;="</span>, umbral, <span class="st">"reseñas →"</span>, n, <span class="st">"productos</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Análisis de sensibilidad propio:</strong> Se exploró el rango de forma más granular:</p>
+<ul>
+<li><blockquote class="blockquote">
+<p>= 20 reseñas → 5.030 productos (demasiado grande, el grafo no compila)</p>
+</blockquote></li>
+<li><blockquote class="blockquote">
+<p>= 50 reseñas → 1.844 productos</p>
+</blockquote></li>
+<li><blockquote class="blockquote">
+<p>= 70 reseñas → 1.276 productos ✓</p>
+</blockquote></li>
+<li><blockquote class="blockquote">
+<p>= 100 reseñas → 866 productos (pierde estructura comunitaria)</p>
+</blockquote></li>
+</ul>
+<p><strong>4. Decisión final:</strong> Umbral 70 reseñas. Es el punto de inflexión donde el grafo es computacionalmente manejable y conserva suficiente estructura para que Louvain detecte comunidades significativas.</p>
+<hr>
+</section>
+<section id="interacción-7-limpieza-de-nodos-aislados" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-7-limpieza-de-nodos-aislados">Interacción 7 — Limpieza de nodos aislados</h2>
+<p><strong>1. Prompt inicial:</strong> “Intento eliminar los nodos aislados pero no me elimina ninguno, ¿qué hago?”</p>
+<p><strong>2. Respuesta de la IA:</strong> Sugirió usar <code>delete_vertices(grafo, which(degree(grafo) == 0))</code>.</p>
+<p><strong>3. Validación humana:</strong> Al ejecutarlo, el número de nodos no cambió (1017 → 1017). Investigando, se comprobó que esto es correcto: al construir el grafo filtrando por N≥10 en las aristas, cualquier producto que aparece en la edge list ya tiene al menos una conexión. El filtrado previo los eliminó implícitamente. La IA no anticipó este resultado, pero el código era técnicamente correcto.</p>
+<p><strong>4. Conclusión:</strong> No existen nodos aislados. Se documenta el paso igualmente en el proyecto para demostrar que se realizó la comprobación.</p>
+<hr>
+</section>
+<section id="interacción-8-métricas-de-centralidad-con-tidygraph" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-8-métricas-de-centralidad-con-tidygraph">Interacción 8 — Métricas de centralidad con tidygraph</h2>
+<p><strong>1. Prompt inicial:</strong> “¿Cómo ordeno los productos según PageRank y Betweenness?”</p>
+<p><strong>2. Código erróneo sugerido por la IA:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Código sugerido (incorrecto para el contexto del curso)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">&lt;-</span> <span class="fu">page_rank</span>(g_clean)<span class="sc">$</span>vector</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>bt <span class="ot">&lt;-</span> <span class="fu">betweenness</span>(g_clean, <span class="at">normalized =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Crítica:</strong> Las funciones <code>page_rank()</code> y <code>betweenness()</code> son de <code>igraph</code> base. Preferí usar las funciones de <code>centrality_*</code> de <code>tidygraph</code> para mantener la coherencia con el enfoque tidy del curso. Además, el código sugerido no asignaba los resultados a los nodos del grafo, lo que dificultaría su uso posterior en análisis o visualización.</p>
+<p><strong>4. Solución final:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>g_tidy <span class="ot">&lt;-</span> <span class="fu">as_tbl_graph</span>(g_clean) <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">degree      =</span> <span class="fu">centrality_degree</span>(),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pagerank    =</span> <span class="fu">centrality_pagerank</span>(),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">betweenness =</span> <span class="fu">centrality_betweenness</span>(<span class="at">normalized =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="bloque-iii-clasificación" class="level1">
+<h1>Bloque III: Clasificación</h1>
+<section id="interacción-9-asignación-de-categorías-artificiales-al-grafo" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-9-asignación-de-categorías-artificiales-al-grafo">Interacción 9 — Asignación de categorías artificiales al grafo</h2>
+<p><strong>1. Prompt inicial:</strong> “¿Cómo añado una columna nueva a <code>metricas_grafo</code> con <code>data.table</code> y luego asigno ese atributo a los nodos de <code>g_clean</code>?”</p>
+<p><strong>2. Código erróneo generado a partir de la sugerencia de la IA:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Código erróneo</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>metricas <span class="ot">&lt;-</span> metricas[, , categoria_volumen <span class="sc">:</span><span class="er">=</span> <span class="fu">fcase</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  n_resenas <span class="sc">&gt;=</span> <span class="dv">150</span>, <span class="st">"Alto volumen"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  n_resenas <span class="sc">&gt;=</span> <span class="dv">90</span>,  <span class="st">"Medio volumen"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">default =</span> <span class="st">"Bajo volumen"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>g_tidy <span class="ot">&lt;-</span> g_tidy <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(metricas[, .(ProductId, categoria_volumen)],</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"name"</span> <span class="ot">=</span> <span class="st">"ProductId"</span>))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>g_clean <span class="ot">&lt;-</span> g_clean <span class="sc">%&gt;%</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(centralidad[, .(name, elite)], <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"name"</span> <span class="ot">=</span> <span class="st">"name"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Error producido: <code>Error in V&lt;-: ! invalid indexing</code></p>
+<p><strong>3. Crítica:</strong> El código tenía dos errores conceptuales:</p>
+<ul>
+<li><strong>Coma de más en <code>data.table</code></strong>: la sintaxis <code>dt[, , col := ...]</code> tiene un argumento vacío de más. El operador <code>:=</code> modifica la tabla por referencia; la forma correcta es <code>dt[, col := ...]</code>.</li>
+<li><strong><code>left_join</code> sobre objetos igraph</strong>: <code>g_tidy</code> es un <code>tbl_graph</code> y <code>g_clean</code> es un objeto <code>igraph</code>. Ninguno es un <code>data.frame</code>, por lo que <code>%&gt;% left_join()</code> no es aplicable. La forma correcta de asignar atributos a nodos en igraph es mediante <code>V(grafo)$atributo &lt;- valores</code>, alineando con <code>match()</code>.</li>
+</ul>
+<p><strong>4. Solución final:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>metricas_grafo[, categoria_volumen <span class="sc">:</span><span class="er">=</span> <span class="fu">fcase</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  n_resenas <span class="sc">&gt;=</span> <span class="dv">150</span>, <span class="st">"Alto volumen"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  n_resenas <span class="sc">&gt;=</span> <span class="dv">90</span>,  <span class="st">"Medio volumen"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">default =</span>          <span class="st">"Bajo volumen"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g_clean)<span class="sc">$</span>categoria_volumen <span class="ot">&lt;-</span> metricas_grafo<span class="sc">$</span>categoria_volumen[</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">match</span>(<span class="fu">V</span>(g_clean)<span class="sc">$</span>name, metricas_grafo<span class="sc">$</span>ProductId)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>match()</code> alinea los valores por <code>ProductId</code>, devolviendo para cada nodo del grafo la posición correspondiente en <code>metricas_grafo</code>. Es el equivalente a un join, pero sobre vectores, que es lo que acepta <code>V()$</code>.</p>
+<hr>
+</section>
+<section id="interacción-10-correlaciones-artificiales-en-la-matriz-icf" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-10-correlaciones-artificiales-en-la-matriz-icf">Interacción 10 — Correlaciones artificiales en la matriz ICF</h2>
+<p><strong>1. Prompt inicial:</strong> “Estoy calculando la similitud entre productos con <code>cor()</code> pero me salen similitudes de exactamente 1.0 en todos los casos. ¿Por qué ocurre esto y cómo lo soluciono?”</p>
+<p><strong>2. Código generado por la IA:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>S_items <span class="ot">&lt;-</span> <span class="fu">cor</span>(M_utilidad, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>S_items[<span class="fu">is.na</span>(S_items)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>recomendar_icf <span class="ot">&lt;-</span> <span class="cf">function</span>(S, producto, <span class="at">top_n =</span> <span class="dv">5</span>) {</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  similitudes <span class="ot">&lt;-</span> S[producto, ]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  similitudes[producto] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="cn">Inf</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  top <span class="ot">&lt;-</span> <span class="fu">sort</span>(similitudes, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span>top_n]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">producto_recomendado =</span> <span class="fu">names</span>(top),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">similitud_pearson    =</span> <span class="fu">round</span>(top, <span class="dv">3</span>))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">recomendar_icf</span>(S_items, top_producto))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Resultado obtenido:</p>
+<pre><code>  producto_recomendado  similitud_pearson
+1           B003TC7WN4                  1
+2           B003VXFK44                  1
+3           B003VXHGDM                  1
+4           B003VXHGE6                  1
+5           B003VXHGPK                  1</code></pre>
+<p><strong>3. Crítica:</strong> Una similitud de exactamente 1.0 en todos los casos es un artefacto estadístico, no un resultado real. Con una densidad de matriz del 2.6%, la mayoría de pares de productos comparten muy pocos usuarios en común. Si dos productos solo tienen 1 o 2 usuarios en común y casualmente les dieron la misma nota, la correlación de Pearson devuelve 1.0 aunque sea una coincidencia puntual. La IA no advirtió de este problema ni añadió ningún control de calidad sobre el número mínimo de usuarios comunes necesarios para que la correlación sea estadísticamente fiable.</p>
+<p><strong>4. Solución final:</strong> Se añadió un filtro basado en multiplicación matricial para calcular el número de usuarios en común por par de productos, poniendo a 0 las similitudes con menos de 10 usuarios en común:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>M_bin            <span class="ot">&lt;-</span> <span class="sc">!</span><span class="fu">is.na</span>(M_utilidad)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>usuarios_comunes <span class="ot">&lt;-</span> <span class="fu">t</span>(M_bin) <span class="sc">%*%</span> M_bin</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>S_items_filtrada <span class="ot">&lt;-</span> S_items</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>S_items_filtrada[usuarios_comunes <span class="sc">&lt;</span> <span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Con este filtro las recomendaciones para el producto con mayor PageRank (B002IEVJRY) muestran similitudes reales entre 0.437 y 0.714, estadísticamente respaldadas por al menos 10 usuarios en común en cada caso.</p>
+<hr>
+</section>
+<section id="interacción-11-validación-cruzada-grafo-icf" class="level2">
+<h2 class="anchored" data-anchor-id="interacción-11-validación-cruzada-grafo-icf">Interacción 11 — Validación cruzada grafo × ICF</h2>
+<p><strong>1. Prompt inicial:</strong> “¿Coinciden los productos recomendados por el ICF con los vecinos directos del producto en el grafo de coparticipación?”</p>
+<p><strong>2. Código sugerido por la IA:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vecinos_grafo <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">neighbors</span>(g_clean, top_producto))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>top_icf       <span class="ot">&lt;-</span> <span class="fu">recomendar_icf</span>(S_items_filtrada, top_producto)<span class="sc">$</span>producto_recomendado</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>coincidencias <span class="ot">&lt;-</span> <span class="fu">intersect</span>(vecinos_grafo, top_icf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Validación humana:</strong> <code>intersect()</code> no había sido vista en clase. Antes de usarla consulté la documentación de R: la función devuelve los elementos comunes entre dos vectores, equivalente a la intersección de conjuntos. Verifiqué el resultado comprobando manualmente que los 5 productos devueltos aparecían efectivamente en ambas listas.</p>
+<p><strong>4. Resultado y conclusión:</strong></p>
+<pre><code>Vecinos en el grafo: 200
+Top 5 ICF: 5
+Coincidencias: 5
+Productos: B004FELBH8, B004T3QMD8, B005A1LGIY, B006BXUYN8, B007JT7AI</code></pre>
+<p>Los 5 productos con mayor similitud de Pearson son también vecinos directos en el grafo de coparticipación, validando que ambas aproximaciones capturan la misma estructura subyacente del mercado.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
