@@ -1,6 +1,6 @@
 ---
 title: "Anexo de Uso de IA — Diario de Interacción"
-subtitle: "Proyecto: Arquitectura de Influencia en Ecosistemas de Consumo"
+subtitle: "Proyecto: De Reseñas a Redes: Arquitectura de Influencia en Amazon"
 author: "Francisco Díaz Fernández"
 date: today
 output: html_document

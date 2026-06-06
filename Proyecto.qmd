@@ -1,5 +1,5 @@
 ---
-title: "Arquitectura de Influencia en Ecosistemas de Consumo"
+title: "De Reseñas a Redes: Arquitectura de Influencia en Amazon"
 subtitle: "Dataset Amazon Product Reviews"
 author: "Francisco Díaz Fernández"
 date: today
